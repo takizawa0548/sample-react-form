@@ -23,7 +23,7 @@ export default function App() {
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* register your input into the hook by invoking the "register" function */}
-      <input {...register("example", { required:true })} />
+      <input {...register("example", { disabled: count===0?true:false })} />
 
 
       {/* include validation with required or other standard HTML validation rules */}
