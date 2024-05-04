@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useForm } from "react-hook-form"
+import { useState } from "react"
 
-function App() {
+
+export default function App() {
+  const [count,setCount] = useState(0)
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({defaultValues: {example: 'aaaaaa'}})
+
+
+  const example = watch('example')
+  const onSubmit = (data) => console.log(data)
+
+
+  console.log(watch("example")) // watch input value by passing the name of it
+  {errors && console.log(errors)}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* register your input into the hook by invoking the "register" function */}
+      <input {...register("example", { required:true })} />
 
-export default App;
+
+      {/* include validation with required or other standard HTML validation rules */}
+      <input defaultValue="test" {...register("exampleRequired", { minLength:{ value:4, message:'Min Length is 4'}  })} />
+      {/* errors will return when field validation fails  */}
+      {errors?.exampleRequired?.type === "minLength" && <p>{errors.exampleRequired.message}</p>}
+      {example}
+
+      <button onClick={()=>{setCount(c=>c+1)}}>test</button>
+      <input type="submit" />
+    </form>
+  )
+}
